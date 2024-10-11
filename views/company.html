@@ -1,0 +1,189 @@
+<html></html>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500&display=swap" rel="stylesheet">
+  </head>
+  
+
+
+<style>
+
+  * {
+    font-family: 'Spectral', serif;
+  }
+
+	body {
+		background-color: rgb(247, 239, 215);
+		margin:0px;
+	}
+
+  #header {
+    width:100%;
+    background-color:white;
+    color:navy;
+    text-align:center;
+    margin-top:0;
+    font-size:large;
+    border-bottom:1px solid navy;
+    padding-top:25px;
+  } 
+  
+  #header a {
+    color:navy;
+    margin-left:20px;
+    margin-right:20px;
+    text-decoration: none;
+    
+  }
+  
+  #userbtn {
+    padding-left:20px;
+    border-left:2px solid navy;
+    margin-right:40px;
+    color:navy;
+    
+  }
+  
+  #userMenu {
+    float:right;
+    background-color:white;
+    padding:25px;
+    margin-left:5px;
+    border:1px solid navy;
+  } #userMenu a {
+    color:navy;
+    margin-left:0px;
+  }
+
+  #students {
+    border-right:2px solid navy;
+    float:left;
+    padding:15px;
+  }
+
+
+  #studentsList {
+    padding-right:25px;
+    text-align:left;  
+    margin-left:30px; 
+  
+  }
+
+  #tasks {
+    margin-left:25px;
+    margin-right:255px;
+    border:2px solid black;
+    width:60%;
+    float:right;
+  }
+
+
+  .task{
+    text-align:left;
+    margin-left:25px; 
+  }
+
+  form {
+    margin:100px;
+    text-align:center;
+  }
+
+  input {
+    margin-left:5px;
+  }
+
+  
+
+
+ 
+
+  </style>
+
+  <body>
+
+             
+      <div id = 'userMenu'>
+       <a href = /logout>Logout</a>
+      </div>
+
+ 
+ <br>
+ <br>
+
+ <span style = 'font-size:x-large; margin:50px;'><strong><i>VolApp</i></strong></span>
+
+<span style = 'text-align:center; font-size:x-large; margin-left: 600px;'>Dashboard</span>
+
+<span id = 'userbtn' style = 'float:right; font-size:x-large;'></span>
+
+   
+
+
+  <div>
+  
+
+
+ 
+
+<form action = '/company/addtask' method = 'POST'>
+Add a new task/event: 
+  <input placeholder = 'name' name = 'name' type = text>
+  <input placeholder = 'time commitment (in hours)' name = 'time' type = text>
+  <input placeholder = 'Date: MM/DD/YY' name = 'date' type = text>
+  <input type = submit>
+</form>
+
+
+ <div id = 'students'>
+    <h3 id = 'studentCount' style = 'margin-left:35px;'>Volunteers:</h3>
+    <ol id = 'studentsList'></ol>
+  </div>
+
+
+<h2 style = 'text-align:center;'>Current Tasks</h2>
+
+<div id = 'tasks'></div>
+
+  </body>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">></script>
+
+  <script>
+
+$.get('/user', (data) => {
+    $('#userbtn').html(data);
+});
+
+  let menuShow = false;
+  $('#userMenu').hide();
+
+  $('#userbtn').on('click', () => {
+    if (menuShow === true) {
+      $('#userMenu').hide();
+      menuShow = false;
+    } else {
+      menuShow = true;
+      $('#userMenu').show();
+    }
+  });
+
+$.get('/schools/tasks', data => {
+  for (task of data) {
+    $('#tasks').append(`
+  <p class = task>${task.name} -<strong>Time Commitment: ${task.time} Hours</strong>- ${task.date}</p>
+
+  `);
+  }
+});
+
+$.get('/company/dashboard/info', data => {
+    for (let person of data) {
+      $('#studentsList').append(`
+      <li>${person.name}</li>
+      `)
+    }
+});
+  </script>
+</html>

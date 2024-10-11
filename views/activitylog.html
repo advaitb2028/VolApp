@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500&display=swap" rel="stylesheet">
+  </head>
+
+<style>
+
+  * {
+  font-family: 'Spectral', serif;
+}
+
+
+#entry1 {
+  color:blue;
+}
+
+
+
+	body {
+		background-color: rgb(247, 239, 215);
+		font-family:"calibri";
+		margin:0px;
+	}
+
+  
+  th {
+    margin:15px;
+    padding:15px;
+  }
+  table {
+   margin-left:auto;
+   margin-right:auto;
+   margin-bottom:50px;
+   width:90%;
+   overflow:scroll;
+   border-collapse:collapse;
+   
+  }
+
+  td {
+    
+    padding:25px;
+    border:1px solid navy;
+    
+    background-color: white;
+  }
+
+  #header {
+    width:100%;
+    background-color:white;
+    color:navy;
+    text-align:center;
+    margin-top:0;
+    font-size:large;
+    border-bottom:1px solid navy;
+    padding-top:20px;
+  } 
+  
+  #header a {
+    color:navy;
+    margin-left:20px;
+    margin-right:20px;
+    text-decoration: none;
+    
+  }
+  
+  #userbtn {
+    padding-left:20px;
+    border-left:2px solid navy;
+    margin-left:40px;
+    
+  }
+  
+  #userMenu {
+    float:right;
+    background-color:white;
+    padding:25px;
+    margin-left:5px;
+    border:1px solid navy;
+  } #userMenu a {
+    color:navy;
+    margin-left:0px;
+  }
+  
+  form {
+    
+    margin-left:auto;
+    margin-right:auto;
+    padding:17px;
+    margin-top:40px;
+    margin-bottom:20px;
+    border:1px solid navy;
+    width:87%;
+    text-align:center;
+    background-color:white;
+  }
+  
+  input {
+    
+    height:50px;
+    border:1px solid black;
+    margin:10px;
+    text-size:medium;
+    
+  } #submitbtn {
+    width:50px;
+  }
+  
+  #stats {
+    text-align:center;
+    margin-top:60px;
+    margin-bottom:85px;
+  }
+  
+  #totalcount {
+    background-color:white;
+    font-weight:bold;
+    font-size:x-large;
+    border:2px solid navy;
+    border-radius:15px;
+    padding:15px;
+    margin:10px;
+  }
+  
+  #hourcount {
+    background-color:white;
+    font-weight:bold;
+    font-size:x-large;
+    border:2px solid navy;
+    border-radius:15px;
+    padding:15px;
+    margin:10px;
+    
+  }
+
+</style>
+
+
+
+<div id = 'header'>
+  
+  <span style = 'font-size:x-large;'><strong><i>VolApp</i></strong></span>
+  
+
+<a href = /schools style = 'margin-left:65px;'>Groups</a>
+
+
+
+<a href = /discover>Discover</a>
+<a href = /dashboard>Dashboard</a>
+<a style = 'font-weight:bold;' href = /activitylog>Activity Log</a>
+
+<span id = 'userbtn'></span>
+
+
+  
+<br>
+<br>
+
+</div>
+
+    <div id = 'userMenu'>
+      <a href = /logout>Logout</a>
+</div>
+
+
+<body>
+
+<form action = /logentry method = 'POST'>
+    Name: <input style = 'width:650px;' type = text name = 'name'>
+    Time(Hours): <input type = int name = 'time'>
+    Date: <input type = text name = 'date'>
+    <input type = submit id = 'submitbtn'>
+</form>
+
+<div id = 'stats'>
+  <span id = 'totalcount'> Shifts Worked: </span>
+  <span id = 'hourcount'>Total Time: </span>
+</div>
+
+<div>
+<table>
+  <tr>
+    <td style = 'text-align:center; font-weight:bold; border:2px solid navy;'>What</td>
+    <td style = 'text-align:center; font-weight:bold; border:2px solid navy;'>Time</td>
+    <td style = 'text-align:center; font-weight:bold;border:2px solid navy;'>When</td>
+    <td style = 'text-align:center; font-weight:bold; border:2px solid navy;'>Organization</td>
+  </tr>
+</table>
+</div>
+
+
+
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+</script>
+
+<script>
+
+  $.get('/user', (data) => {
+    $('#userbtn').html(data);
+
+  });
+
+  let menuShow = false;
+  $('#userMenu').hide();
+
+  $('#userbtn').on('click', () => {
+    if (menuShow === true) {
+      $('#userMenu').hide();
+      menuShow = false;
+    } else {
+      menuShow = true;
+      $('#userMenu').show();
+    }
+  });
+
+  $.get('/logData', (data) => {
+  $('#totalcount').html(`Shifts Worked: <strong style = color:blue;>${data.length}</strong>`);
+  let hoursCount = 0;
+  for (let i = 0; i < data.length; i++) {
+
+
+      $('table').append(`
+    <tr>
+    <td>${data[i].name}</td>
+    <td>${data[i].time} Hours</td>
+    <td>${data[i].date}</td>
+    <td>${data[i].organization}</td>
+    </tr>
+    `);
+
+    hoursCount += data[i].time;
+
+  }
+  
+  $('#hourcount').html(`Total Time: <strong style = color:blue;>${hoursCount} Hours </strong>`);
+  
+    
+  });
+
+  </script>
+</html>

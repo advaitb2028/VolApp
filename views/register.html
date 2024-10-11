@@ -1,0 +1,55 @@
+<h1>Register</h1>
+
+<form action = '/register' method = 'POST'>
+  <input type = 'text' name = 'username' placeholder = 'enter username'>
+  <br>
+  <input type = 'password' name = 'password' placeholder = 'enter password'>
+  <br>
+  <input type = 'text' name = 'email' placeholder = 'enter email'>
+  <br>
+  
+  <input id = 'submitbtn' type = 'submit' value = 'Register'> <h4 style = 'color:navy; text-align:center;'>Already got an account? <a href = /login>Login</a></h4>
+
+  <h4 style = 'color:navy; text-align:center;'>Need to register as an organization instead? <a href = /newentry>Register</a></h4>
+</form>
+
+
+<style>
+
+* {
+    font-family:optima;
+  }
+    body {
+      background-color:white;
+      padding-top:150px;
+    }
+    h1 {
+      text-align:center;
+      color:navy;
+      margin-bottom:50px;
+    }
+    form {
+      text-align:center;
+      margin-left:auto;
+      margin-right:auto;
+      width:33%;
+      border:1px solid navy;
+      padding-top:30px;
+      
+      
+    }
+    input {
+      width:75%;
+      height:10%;
+      background-color:rgb(247, 239, 215);
+      margin-bottom:20px;
+      border:1px solid navy;
+      padding:15px;
+    }
+    #submitbtn {
+      background-color:rgb(33, 48, 255);
+      color:rgb(255, 255, 255);
+
+    }
+
+    </style>

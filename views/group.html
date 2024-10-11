@@ -1,0 +1,248 @@
+<html></html>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500&display=swap" rel="stylesheet">
+  </head>
+  <style>
+
+    * {
+  font-family: 'Spectral', serif;
+}
+	body {
+		background-color: rgb(247, 239, 215);
+		font-family:"calibri";
+		margin:0px;
+	}
+
+    #header {
+    width:100%;
+    background-color:white;
+    color:navy;
+    text-align:center;
+    margin-top:0;
+    font-size:large;
+    border-bottom:1px solid navy;
+    padding-top:25px;
+  } 
+  
+  #header a {
+    color:navy;
+    margin-left:20px;
+    margin-right:20px;
+    text-decoration: none;
+    
+  }
+  
+  #userbtn {
+    padding-left:20px;
+    border-left:2px solid navy;
+    margin-left:40px;
+    color:navy;
+    
+  }
+  
+  #userMenu {
+    float:right;
+    background-color:white;
+    padding:25px;
+    margin-left:5px;
+    border:1px solid navy;
+  } #userMenu a {
+    color:navy;
+    margin-left:0px;
+  }
+
+  #students {
+    margin:15px;
+    padding:5px;
+    border-right:2px solid navy;
+    width:15%;
+    float:left;
+  }
+
+  #studentsList {
+    
+  }
+
+  #title {
+    color:navy;
+    padding-left:10px;
+    margin-left:12px;
+    width:20%;
+  }
+
+  #tasks {
+    padding:25px;
+    text-align:left;
+  }
+
+  .task {
+    border:1px solid navy;
+    width:60%;
+    padding:10px;
+  }
+
+  #container {
+    text-align:center;
+    float:right;
+    width:65%;
+    margin-right:100px;
+  }
+
+  .signup {
+    color:white;
+    float:right;
+    background-color:blue;
+    border:3px solid white;
+    margin:0px;
+    padding:10px;
+    margin-top:20px;
+    
+    
+  }
+
+  .signup:hover {
+    font-size:15px;
+  }
+  </style>
+
+  <body>
+    <div id = 'header'>
+  
+  <span style = 'font-size:x-large;'><strong><i>VolApp</i></strong></span>
+  
+
+<a href = /schools style = 'margin-left:65px;font-weight:bold;'>Groups</a>
+
+<a href = /discover>Discover</a>
+<a href = /dashboard>Dashboard</a>
+<a href = /activitylog>Activity Log</a>
+
+<span id = 'userbtn'></span>
+ 
+<br>
+<br>
+
+</div>
+
+    <div id = 'userMenu'>
+      <a href = /logout>Logout</a>
+      <br>
+      <br>
+      <a href = /settings>Settings</a>
+</div>
+
+ 
+
+<h3 id = 'title'></h3>
+
+
+
+<a href = /schools style = 'margin-left:25px; text-decoration:none; float:left'>Back to All</a>
+
+<br>
+<br>
+
+ <div id = 'students'>
+    <h3 id = 'studentCount'>Volunteers:</h3>
+    <ol id = 'studentsList'></ol>
+  </div>
+
+
+<div id = 'container'><h3>Tasks</h3>
+  <div id = 'tasks'><div></div>
+
+ 
+
+  <!-- CONTENT SPECIFIC FOR THE SCHOOL -->
+
+
+  </body>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">></script>
+
+  <script>
+
+    console.log('hello');
+
+$.get('/user', (data) => {
+    $('#userbtn').html(data);
+});
+
+  let menuShow = false;
+  $('#userMenu').hide();
+
+  $('#userbtn').on('click', () => {
+    if (menuShow === true) {
+      $('#userMenu').hide();
+      menuShow = false;
+    } else {
+      menuShow = true;
+      $('#userMenu').show();
+    }
+  });
+
+
+
+const currentPath = window.location.pathname;
+const schoolName = currentPath.substring(9);
+
+$('#title').html(`<h1>${schoolName}</h1>`);
+
+$.get(`/schoolsInfo/${schoolName}`, (data) => {
+  $('#studentCount').html(`Volunteers: ${data.length} total`)
+  for (row of data) {
+    $('#studentsList').append(`<li>${row.name}</li>`);
+  }
+})
+
+$.get(`/schools/tasks?school=${schoolName}`, data => {
+
+  for (task of data) {
+
+    $('#tasks').append(`
+    <h5 id = task${task.id.toString()} class = 'signup'>Signup</h5>
+  <p class = task>${task.name} -<strong>Time Commitment: ${task.time} Hours</strong>- ${task.date}</p>
+  <br>
+  `);
+
+    /*$.get('/tasks/searchsignup?taskid=' + task.id.toString(), (otherData) => {
+      if (otherData === "True") {
+        $('#tasks').append(`
+    <h5 id = task${task.id.toString()} class = 'signup'>Signed up already</h5>
+  <p class = task>${task.name} -<strong>Time Commitment: ${task.time} Hours</strong>- ${task.date}</p>
+  <br>
+  `);
+      } else {
+        $('#tasks').append(`
+    <h5 id = task${task.id.toString()} class = 'signup'>Signup</h5>
+  <p class = task>${task.name} -<strong>Time Commitment: ${task.time} Hours</strong>- ${task.date}</p>
+  <br>
+  `);
+      }
+    });*/
+
+    $('.signup').on('click', function () {
+
+$(this).text('joined');
+$.get(`/tasks/signup?taskid=${$(this).attr("id")}`);
+
+});
+
+
+  }
+
+});
+
+    
+
+
+  
+  
+
+
+
+    </script>
+</html>

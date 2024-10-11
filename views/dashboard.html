@@ -1,0 +1,245 @@
+<head></head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>repl.it</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<link rel="preconnect" href="https://fonts.googleapis.com"> 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500&display=swap" rel="stylesheet">
+</head>
+
+<style>
+* {
+  font-family:'Spectral', 'serif';
+}
+	body {
+		background-color: rgb(247, 239, 215);
+		font-family:"calibri";
+		margin:0px;
+    padding-bottom:35px;
+	}
+
+  #header {
+    width:100%;
+    //background-color:(247, 239, 215);
+    background-color:white;
+    color:navy;
+    text-align:center;
+    margin-top:0;
+    font-size:large;
+    border-bottom:1px solid navy;
+    padding-top:25px;
+    margin-bottom:50px;
+  } 
+  
+  #header a {
+    color:navy;
+    margin-left:20px;
+    margin-right:20px;
+    text-decoration: none;
+    
+  }
+  
+  #userbtn {
+    padding-left:20px;
+    border-left:2px solid navy;
+    margin-left:40px;
+    
+  }
+  
+  #userMenu {
+    float:right;
+    background-color:white;
+    padding:25px;
+    margin-left:5px;
+    border:1px solid navy
+  } #userMenu a {
+    color:navy;
+    margin-left:0px;
+  }
+
+  td {
+    border:1px solid navy;
+    padding:15px;
+  }
+  #todo {
+    border-collapse:collapse;
+    margin-left:50px;
+    background-color:white;
+    float:left;
+    width:50%;
+
+  }
+  #discoverPlug {
+    background-color:white;
+    padding:25px;
+    margin-right:50px;
+    border:1px solid navy;
+    margin-bottom:70px;
+  }
+
+  form {
+    background-color:white;
+    padding:25px;
+    margin-right:50px;
+    border:1px solid navy;
+    margin-bottom:70px;
+  }
+
+  #container {
+    float:right;
+    width:35%;
+  }
+
+  input {
+    margin-left:5px;
+    width:300px;
+  }
+
+  .checkbtn:hover {
+    font-weight:bold;
+  }
+
+  tr {
+    margin-bottom:10px;
+  }
+
+
+
+  
+</style>
+
+<div id = 'header'>
+  
+  <span style = 'font-size:x-large;'><strong><i> VolApp</i></strong></span>
+  
+
+<a href = /schools style = 'margin-left:65px;'>Groups</a>
+<a href = /discover>Discover</a>
+<a href = /dashboard style = 'font-weight:bold;'>Dashboard</a>
+<a href = /activitylog>Activity Log</a>
+
+<span id = 'userbtn'></span>
+
+<br>
+<br>
+
+</div>
+
+<div id = 'userMenu'>
+      <a href = /logout>Logout</a>
+</div>
+
+
+<body>
+
+  <div id = 'container'>
+
+ <div id = 'discoverPlug'>
+   <h2><a href = /discover>Find Opportunities</a></h2>
+   <p>View the discover page to find volunteering opportunities suitable for you. You can filter based on type and category.</p>
+</div>
+
+<form action = /logentry method = 'POST'>
+    Name:  <input type = text name = 'name'>
+    <br>
+    <br>
+    Time:  <input type = int name = 'time' placeholder = 'time in hours'>
+     <br>
+     <br>
+    Date:  <input type = text name = 'date'>
+    <br>
+    <br>
+    <input type = submit id = 'submitbtn'>
+</form>
+
+</div>
+
+
+  <table id = 'todo'>
+    <tr>
+      <td style = 'font-weight:bold;'>Desc</td>
+      <td style = 'font-weight:bold;'>Finished?</td>
+      <td style = 'font-weight:bold;'>Organization</td>
+      <td style = 'font-weight:bold;'>Time</td>
+      <td style = 'font-weight:bold;'>Date</td>
+    </tr>
+  </table>
+
+ 
+
+</body>
+
+
+
+  
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+</script>
+
+<script>
+  console.log('hello world');
+
+  $.get('/user', (data) => {
+    $('#userbtn').html(data);
+});
+
+let menuShow = false;
+$('#userMenu').hide();
+
+$('#userbtn').on('click', () => {
+    if (menuShow === true) {
+      $('#userMenu').hide();
+      menuShow = false;
+    } else {
+      menuShow = true;
+      $('#userMenu').show();
+    }
+});
+
+
+  $.get('/tasks/signedup?', (data) => {
+    let hours = 0;
+    for (task of data) {
+      
+      $.get(`/schools/tasks?taskid=${task.taskid}`, data => {
+   
+        console.log(data.id)
+        $('#todo').append(`<tr>
+        <td>${data.name}</td>
+        <td id = check${task.id.toString()}  class = 'checkbtn' style = 'background-color:green; color:white;'>Check Off</td>
+        <td>${data.organization}</td>
+        <td>${data.time} Hours</td>
+        <td>${data.date}</td>
+        <br>
+        <br>
+        </tr>`)
+
+        $('.checkbtn').on('click', function () {
+          console.log('hi world')
+          console.log($(this).attr("id"))
+
+
+
+          $.get(`/tasks/update?taskid=${$(this).attr("id")}`, data => {
+            
+          });
+
+          $(this).css('background-color', 'grey');
+          $(this).text('Done');
+          
+          
+        });
+
+         })
+
+       } 
+       
+
+        
+
+    
+  });
+
+</script>

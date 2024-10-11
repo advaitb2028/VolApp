@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>repl.it</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<link rel="preconnect" href="https://fonts.googleapis.com"> 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500&display=swap" rel="stylesheet">
+</head>
+
+<style>
+* {
+  font-family:'Spectral', 'serif';
+}
+	body {
+		background-color: rgb(247, 239, 215);
+		font-family:"calibri";
+		margin:0px;
+    padding-bottom:35px;
+	}
+
+	#oppBox {
+		color: blue;
+		background-color: white;
+		margin-top:35px;
+    margin-right:100px;
+		border: 2px solid navy;
+		border-radius: 15px;
+		padding: 30px;
+    width:65%;
+    float:right;
+	}
+
+	#details {
+		float: right;
+		width: 50%;
+		color: black;
+	}
+
+  #searchBar {
+    margin:25px;
+    margin-left:auto;
+    margin-right:350px;
+    width:35%;
+    float:right;
+    padding:15px;
+  }
+	
+	#selector-bar {
+    float:left;
+    //width:10%;
+    margin-top:100px;
+    margin-left:40px;
+	}
+
+	.selector {
+		color: blue;
+		margin-bottom:10px;
+		padding:10px;
+    marigin-top:100px;
+	} 
+  .selector:hover {
+    font-weight:bold;
+  }
+
+	.selected {
+		border: 2px solid black;
+		background-color:rgb(223, 242, 242);
+    margin-bottom:5px;
+		
+	}
+
+  #header {
+    width:100%;
+    //background-color:(247, 239, 215);
+    background-color:white;
+    color:navy;
+    text-align:center;
+    margin-top:0;
+    font-size:large;
+    border-bottom:1px solid navy;
+    padding-top:25px;
+    margin-bottom:25px;
+  } 
+  
+  #header a {
+    color:navy;
+    margin-left:20px;
+    margin-right:20px;
+    text-decoration: none;
+    
+  }
+  
+  #userbtn {
+    padding-left:20px;
+    border-left:2px solid navy;
+    margin-left:40px;
+    
+  }
+  
+  #userMenu {
+    float:right;
+    background-color:white;
+    padding:25px;
+    margin-left:5px;
+    border:1px solid navy;
+  } #userMenu a {
+    color:navy;
+    margin-left:0px;
+  }
+
+  .join-btn{
+    background-color:blue;
+    color:white;
+    padding:10px;
+
+  }
+
+  .join-btn:hover {
+    font-weight:bold;
+    font-size:large;
+  }
+
+  
+</style>
+
+
+
+<div id = 'header'>
+  
+  <span style = 'font-size:x-large;'><strong><i> VolApp</i></strong></span>
+  
+
+<a href = /schools style = 'margin-left:65px;'>Groups</a>
+<a href = /discover style = 'font-weight:bold;'>Discover</a>
+<a href = /dashboard>Dashboard</a>
+<a href = /activitylog>Activity Log</a>
+
+<span id = 'userbtn'></span>
+
+<br>
+<br>
+
+</div>
+
+<div id = 'userMenu'>
+      <a href = /logout>Logout</a>
+</div>
+
+
+<body>
+
+  
+  
+
+  <div id = 'selector-bar'>
+    <span class = 'selector selected'>All</span>
+    <br>
+    <br>
+    <span class = 'selector'>Stem</span>
+    <br>
+    <br>
+    <span class = 'selector'>Literature/Arts</span>
+    <br>
+    <br>
+    <span class = 'selector'>Sports</span>
+    <br>
+    <br>
+    <span class = 'selector'>Religious</span>
+    <br>
+    <br>
+    <span class = 'selector'>Humanitarian</span>
+    <br>
+    <br>
+    <span class = 'selector'>Other/Misc</span>
+    <br>
+    <br>
+  </div>
+    
+<div>
+    <div id = "div1">
+      <!--<input type = 'text' name = 'searchQuery' id = 'searchBar' placeholder = 'Search for Organizations'>-->
+    </div>
+
+    </div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+</script>
+
+<script>
+
+
+$.get('/user', (data) => {
+    $('#userbtn').html(data);
+});
+
+let menuShow = false;
+$('#userMenu').hide();
+
+$('#userbtn').on('click', () => {
+    if (menuShow === true) {
+      $('#userMenu').hide();
+      menuShow = false;
+    } else {
+      menuShow = true;
+      $('#userMenu').show();
+    }
+});
+
+const url = '/trials2';
+
+$.get(url+'?field=All', (data, status) => {
+  for (let i = 0; i < data.length; i++) {
+    $('#div1').append(`
+    <div id = oppBox>
+    <h2>${data[i].title}</h2>
+    <p id = details><strong>Description:</strong> ${data[i].description} <br>
+    <br>
+    <strong>Field: </strong>${data[i].field}</p>
+    <p>Minimum Age: ${data[i].minAge}</p> 
+    <p>Website: ${data[i].website}</p> 
+    <p>Phone Number: ${data[i].phoneNum}</p> 
+    <p>Email: ${data[i].email}</p>
+    <br> 
+    <span class = "join-btn" id = opp${data[i].id.toString()}>Join</span>
+    
+    </div>
+    `);
+
+      $('.join-btn').on('click', function() {
+      console.log($(this).attr('id'));
+      
+      $.get(`/schools/join?schoolid=${$(this).attr('id')}`, () => {
+        $(this).css('background-color:grey;')
+        location.assign('/schools');
+      })
+      
+    });
+  }
+
+   
+
+  
+});
+
+console.log('hello')
+
+$('.selector').on('click', function () {
+  $('.selector').removeClass('selected');
+  $(this).addClass('selected');
+  $('#div1').html(``);
+  //$('#div1').html(${this});
+  $.get(url+`?field=${$(this).html()}`, (data, status) => {
+
+    $('#div1').append(`
+    <input type = 'text' name = 'searchQuery' id = 'searchBar' placeholder = 'Search for Organizations'> 
+    `);
+
+    for (let i = 0; i < data.length; i++) {
+      $('#div1').append(`
+      
+      <div id = oppBox>
+    <h2>${data[i].title}</h2>
+    <p id = details><strong>Description:</strong> ${data[i].description} <br>
+    <br>
+    <strong>Field: </strong>${data[i].field}</p>
+    <p>Minimum Age: ${data[i].minAge}</p> 
+    <p>Website: ${data[i].website}</p> 
+    <p>Phone Number: ${data[i].phoneNum}</p> 
+    <p>Email: ${data[i].email}</p> 
+    <br>
+    <span class = "join-btn" id = opp${data[i].id.toString()}>Join</span> 
+   
+    </div>
+    `);
+
+    $('.join-btn').on('click', function() {
+      console.log($(this).attr('id'));
+
+      $.get(`/schools/join?schoolid=${$(this).attr('id')}`, () => {
+        $(this).css('background-color:grey;')
+        location.assign('https://currentnode.urbo.repl.co/schools');
+      })
+    });
+
+    }
+
+    
+
+    
+  });
+  
+ 
+});
+
+
+
+
+</script>
+
+
+  </body>
+
+</html>

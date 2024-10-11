@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>form</title>
+</head>
+<body>
+
+  <h1>Organization Registration</h1>
+
+
+<form action = '/entrypost' method = "POST">
+
+<div style = 'float:right;'>
+  <h3>Website:</h3>
+  <input type = 'text' name = 'website'>
+  <br>
+  <h3>Email:</h3>
+  <input type = 'email' name = 'email'>
+  <br>
+  <h3>Phone Number:</h3>
+  <input type = 'text' name = 'pNum'>
+  <br>
+  <h3>Minimum Age:</h3>
+  <input type = 'int' name = 'minAge'>
+  <br>
+  <h3>Field:</h3>
+  <select name="field" multiple style = 'background-color:rgb(247, 239, 215); width:50%; padding:20px; text-align:center;'> 
+  <option value="Stem">Stem</option>
+  <option value="Literature/Arts">Literature/Arts</option>
+  <option value="Sports">Sports</option>
+  <option value="Religious">Religious</option>
+  <option value="Humanitarian">Humanitarian</option>
+  <option value="Misc/Other">Other/Misc</option>
+</select>
+</div>
+
+<div style = 'float:left;'>
+	<h3>Name:</h3>
+  <input type = 'text' name = 'title'>
+  <h3>Account Password:</h3>
+  <input type = 'password' name = 'password'>
+  <h4>Code for students to join group:</h4>
+  <input type = 'text' name = 'passcode'>
+  <h3>Description:</h3>
+  <input type = 'text' name = 'description'>
+</div>
+
+
+  <input type = submit value = 'Register' style = 'margin-top:50px; background-color:blue; font-size:large; height:75px; color:white;'>
+</form>
+
+</body>
+
+<style>
+  * {
+    color: navy;
+    font-family:'spectral', optima;
+  }
+  h1 {
+    text-align:center;
+    margin-bottom:70px;
+    margin-top:70px;
+  }
+  input {
+    background-color:rgb(247, 239, 215);
+    width:400px;
+    height:20px;
+    border:1px solid navy;
+    margin-bottom:15px;
+  }
+  form {
+    width:60%;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  option{
+    margin-top:5px;
+  }
+</style>
+
+</html> 

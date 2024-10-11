@@ -1,0 +1,177 @@
+<html></html>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500&display=swap" rel="stylesheet">
+  </head>
+  <style>
+
+    * {
+  font-family: 'Spectral', serif;
+}
+	body {
+		background-color: rgb(247, 239, 215);
+		font-family:"calibri";
+		margin:0px;
+	}
+
+    #header {
+    width:100%;
+    background-color:white;
+    color:navy;
+    text-align:center;
+    margin-top:0;
+    font-size:large;
+    border-bottom:1px solid navy;
+    padding-top:25px;
+  } 
+  
+  #header a {
+    color:navy;
+    margin-left:20px;
+    margin-right:20px;
+    text-decoration: none;
+    
+  }
+  
+  #userbtn {
+    padding-left:20px;
+    border-left:2px solid navy;
+    margin-left:40px;
+    color:navy;
+    
+  }
+  
+  #userMenu {
+    float:right;
+    background-color:white;
+    padding:25px;
+    margin-left:5px;
+    border:1px solid navy;
+  } #userMenu a {
+    color:navy;
+    margin-left:0px;
+  }
+
+  #schoolList {
+    margin:10px;
+    padding:10px;
+    width:100%;
+    text-align:left;
+  }
+
+  form {
+    text-align:center;
+    margin-top:50px;
+  }
+
+  input {
+    padding:10px;
+  }
+
+  #schoolList a {
+    text-decoration:none;
+    text-align:left;
+    background-color:blue;
+    padding:80px;
+    color:white;
+    margin-right:50px;
+  }
+
+  .listLine {
+    display:block;
+    margin-top:250px;
+    text-align:center;
+  }
+
+  </style>
+
+  <body>
+    <div id = 'header'>
+  
+  <span style = 'font-size:x-large;'><strong><i>VolApp</i></strong></span>
+  
+
+<a href = /schools style = 'margin-left:65px;font-weight:bold;'>Groups</a>
+
+<a href = /dashboard>Dashboard</a>
+<a href = /bookmarks>Bookmarks</a>
+<a href = /activitylog>Activity Log</a>
+
+<span id = 'userbtn'></span>
+ 
+<br>
+<br>
+
+</div>
+
+    <div id = 'userMenu'>
+      <a href = /logout>Logout</a>
+      <br>
+      <br>
+      <a href = /settings>Settings</a>
+</div>
+
+
+<form action = /schools/join method = POST>
+  <strong style = 'margin-right:15px'>Join a New School:</strong> 
+  <input type = text name = name placeholder = 'Name'>
+  <input type = text name = passcode placeholder = 'Join Code'>
+  <input type = submit>
+  </form>
+
+  <div id = 'schoolList'>
+
+  </div>
+  </body>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">></script>
+
+  <script>
+$.get('/user', (data) => {
+    $('#userbtn').html(data);
+});
+
+  let menuShow = false;
+  $('#userMenu').hide();
+
+  $('#userbtn').on('click', () => {
+    if (menuShow === true) {
+      $('#userMenu').hide();
+      menuShow = false;
+    } else {
+      menuShow = true;
+      $('#userMenu').show();
+    }
+  });
+
+
+  // GET schools
+
+$.get('/schools/myschools', (data) => {
+  for (org of data) {
+    $('#schoolList').append(`
+    <span class = "listLine">
+    <a href = /schools/${org.organization}>${org.organization}
+    `)
+  }
+
+
+  /*for (let i = 0; i < data.length; i+=5) {
+    $('#schoolList').append(`
+    <span class = "listLine">
+    <a href = /schools/${data[i].school}>${data[i].school}</a>
+    <a href = /schools/${data[i+1].school}>${data[i+1].school}</a>
+    <a href = /schools/${data[i+2].school}>${data[i+2].school}</a>
+    <a href = /schools/${data[i+3].school}>${data[i+4].school}</a>
+    <a href = /schools/${data[i+3].school}>${data[i+4].school}</a>
+    </span>
+    `);
+  }*/
+});
+
+//^^^ create links for each school to show the students and details of each school
+
+    </script>
+</html>
